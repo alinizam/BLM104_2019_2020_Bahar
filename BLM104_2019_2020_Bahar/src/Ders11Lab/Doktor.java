@@ -5,6 +5,8 @@
  */
 package Ders11Lab;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -13,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,6 +31,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Doktor.findByAdi", query = "SELECT d FROM Doktor d WHERE d.adi = :adi")
     , @NamedQuery(name = "Doktor.findBySoyadi", query = "SELECT d FROM Doktor d WHERE d.soyadi = :soyadi")})
 public class Doktor implements Serializable {
+
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,7 +57,9 @@ public class Doktor implements Serializable {
     }
 
     public void setDoktorId(Integer doktorId) {
+        Integer oldDoktorId = this.doktorId;
         this.doktorId = doktorId;
+        changeSupport.firePropertyChange("doktorId", oldDoktorId, doktorId);
     }
 
     public String getAdi() {
@@ -59,7 +67,9 @@ public class Doktor implements Serializable {
     }
 
     public void setAdi(String adi) {
+        String oldAdi = this.adi;
         this.adi = adi;
+        changeSupport.firePropertyChange("adi", oldAdi, adi);
     }
 
     public String getSoyadi() {
@@ -67,7 +77,9 @@ public class Doktor implements Serializable {
     }
 
     public void setSoyadi(String soyadi) {
+        String oldSoyadi = this.soyadi;
         this.soyadi = soyadi;
+        changeSupport.firePropertyChange("soyadi", oldSoyadi, soyadi);
     }
 
     @Override
@@ -93,6 +105,14 @@ public class Doktor implements Serializable {
     @Override
     public String toString() {
         return adi+" "+soyadi;
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }
