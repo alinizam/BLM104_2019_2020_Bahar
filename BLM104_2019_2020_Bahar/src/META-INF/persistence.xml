@@ -5,6 +5,7 @@
     <class>Ders11.Ornek3.Calisan</class>
     <class>Ders11Lab.Doktor</class>
     <class>Ders11Lab.Hasta</class>
+    <class>Ders13Lab.Ornek2.Personel</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/sample"/>
       <property name="javax.persistence.jdbc.user" value="app"/>
